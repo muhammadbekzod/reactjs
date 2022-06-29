@@ -1,18 +1,20 @@
 import React, { useReducer } from 'react'
+import NavTesting from './navTesting'
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'INCREMENT':
             return {
                 count: state.count + 1,
-                showText: state.showText
+                showText: false
             }
         case 'DECREMENT':
+            if (state.count === 0) return state
             return {
                 count: state.count - 1,
-                showText: state.showText
+                showText: false
             }
-        case 'toggle':
+        case 'TOGGLE':
             return {
                 count: state.count, showText: !state.showText
             }
@@ -20,21 +22,28 @@ const reducer = (state, action) => {
     }
 }
 
-
 const IndexReducer = () => {
-    const [state, dispatch] = useReducer(reducer, { count: 0, showText: true })
-
+    const [state, ditpatch] = useReducer(reducer, { count: 0, showText: false })
     return (
         <div>
             <h1>{state.count}</h1>
             <button
                 onClick={() => {
-                    dispatch({ type: 'INCREMENT' })
-                    dispatch({ type: 'toggle' })
+                    ditpatch({ type: 'INCREMENT' })
+                    ditpatch({ type: 'TOGGLE' })
                 }}
-            >Click me!</button>
+            >INCREMENT!</button>
+            <button
+                onClick={() => {
+                    ditpatch({ type: 'DECREMENT' })
 
-            <h1>{state.showText && <p>text me</p>}</h1>
+                }}
+            >DECREMENT!</button>
+            {
+                state.showText && <div>
+                    <NavTesting />
+                </div>
+            }
         </div>
     )
 }
